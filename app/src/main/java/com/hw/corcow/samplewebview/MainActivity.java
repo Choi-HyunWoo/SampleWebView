@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
@@ -90,6 +91,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (webView.canGoForward())
                     webView.goForward();
+            }
+        });
+
+        urlView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    String url = urlView.getText().toString();
+                    if (!TextUtils.isEmpty(url)) {
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "http://" + url;
+                        }
+                        webView.loadUrl(url);
+                    }
+                }
+                return false;
             }
         });
     }
